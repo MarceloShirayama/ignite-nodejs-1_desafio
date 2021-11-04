@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const users = [];
+let users = [];
 
 function checksExistsUserAccount(request, response, next) {
   const { username } = request.headers
@@ -93,7 +93,22 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
-  // TODO: Complete aqui
+  const { user } = request
+  const { id } = request.params
+
+  const index = user.todos.findIndex(todo => todo.id === id)
+
+  if (index === -1) return response.status(404).json({ error: `Todo not found` })
+  
+  user.todos.splice(index, 1)
+
+  return response.status(204).send()
 });
+
+app.delete('/users', (request, response) => {
+  users = []
+
+  return response.status(204).send()
+})
 
 module.exports = app;
