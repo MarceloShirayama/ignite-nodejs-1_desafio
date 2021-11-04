@@ -61,7 +61,7 @@ describe('Todos', () => {
     expect(response.body.created_at).toBeTruthy();
   });
 
-  it.skip('should be able to update a todo', async () => {
+  it('should be able to update a todo', async () => {
     const userResponse = await request(app)
       .post('/users')
       .send({
@@ -94,7 +94,7 @@ describe('Todos', () => {
     });
   });
 
-  it.skip('should not be able to update a non existing todo', async () => {
+  it('should not be able to update a non existing todo', async () => {
     const userResponse = await request(app)
       .post('/users')
       .send({
