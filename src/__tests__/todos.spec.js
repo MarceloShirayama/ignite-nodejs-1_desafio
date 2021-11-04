@@ -116,27 +116,27 @@ describe('Todos', () => {
     expect(response.body.error).toBeTruthy();
   });
 
-  it.skip('should be able to mark a todo as done', async () => {
+  it('should be able to mark a todo as done', async () => {
+    const userFake = {
+      name: 'John Doe',
+      username: 'user3'
+    }
+    const todoFake = {
+      title: 'test todo',
+      deadline: new Date()
+    }
     const userResponse = await request(app)
       .post('/users')
-      .send({
-        name: 'John Doe',
-        username: 'user3'
-      });
-
-    const todoDate = new Date();
+      .send(userFake);
 
     const todoResponse = await request(app)
       .post('/todos')
-      .send({
-        title: 'test todo',
-        deadline: todoDate
-      })
+      .send(todoFake)
       .set('username', userResponse.body.username);
 
     const response = await request(app)
       .patch(`/todos/${todoResponse.body.id}/done`)
-      .set('username', userResponse.body.username);
+      .set('username', userFake.username);
 
     expect(response.body).toMatchObject({
       ...todoResponse.body,
